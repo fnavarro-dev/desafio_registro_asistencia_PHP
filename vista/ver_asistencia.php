@@ -18,11 +18,14 @@ if (isset($_POST['descargar_informe'])) {
 }
 
 $asistencias = $asistenciaControlador->verAsistencias();
+echo "<script>console.log('Registros de asistencia obtenidos:', " . json_encode($asistencias) . ");</script>";
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registros de Asistencia</title>
 </head>
 <body>
@@ -36,14 +39,18 @@ $asistencias = $asistenciaControlador->verAsistencias();
             <th>Hora de Salida</th>
         </tr>
         <?php
-        while ($fila = $asistencias->fetch_assoc()) {
-            echo "<tr>";
-            echo "<td>" . $fila['nombre'] . "</td>";
-            echo "<td>" . $fila['apellido'] . "</td>";
-            echo "<td>" . $fila['fecha'] . "</td>";
-            echo "<td>" . $fila['hora_entrada'] . "</td>";
-            echo "<td>" . $fila['hora_salida'] . "</td>";
-            echo "</tr>";
+        if ($asistencias && is_array($asistencias)) {
+            foreach ($asistencias as $asistencia) {
+                echo "<tr>";
+                echo "<td>" . htmlspecialchars($asistencia['nombre']) . "</td>";
+                echo "<td>" . htmlspecialchars($asistencia['apellido']) . "</td>";
+                echo "<td>" . htmlspecialchars($asistencia['fecha']) . "</td>";
+                echo "<td>" . htmlspecialchars($asistencia['hora_entrada']) . "</td>";
+                echo "<td>" . htmlspecialchars($asistencia['hora_salida']) . "</td>";
+                echo "</tr>";
+            }
+        } else {
+            echo "<tr><td colspan='5'>No hay registros de asistencia disponibles.</td></tr>";
         }
         ?>
     </table>

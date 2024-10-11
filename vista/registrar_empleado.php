@@ -16,6 +16,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'password' => '[OCULTO]'
     ]) . ");</script>";
 
+    $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+    echo "<script>console.log('Hash generado: ', '" . $passwordHash . "');</script>";
+
     $resultado = $controlador->registrarEmpleado($nombre, $apellido, $identificacion, $password);
 
     if ($resultado) {
@@ -29,8 +32,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrar Nuevo Empleado</title>
 </head>
 <body>

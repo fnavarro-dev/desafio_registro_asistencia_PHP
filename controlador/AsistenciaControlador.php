@@ -11,7 +11,7 @@ class AsistenciaControlador {
     public function __construct() {
         echo "<script>console.log('Creando instancia de AsistenciaControlador...');</script>";
         $this->modelo = new AsistenciaModelo();
-        echo "<script>console.log('AsistenciaModelo instanciado.');</script>";
+        echo "<script>console.log('AsistenciaControlador: Modelo instanciado');</script>";
     }
 
     // Método para registrar entrada
@@ -42,8 +42,10 @@ class AsistenciaControlador {
 
     // Método para mostrar registros de asistencia
     public function verAsistencias() {
-        echo "<script>console.log('Obteniendo registros de asistencia...');</script>";
-        return $this->modelo->obtenerAsistencias();
+        echo "<script>console.log('AsistenciaControlador: Solicitando asistencias al modelo...');</script>";
+        $asistencias = $this->modelo->obtenerAsistencias();
+        echo "<script>console.log('AsistenciaControlador: Asistencias recibidas del modelo');</script>";
+        return $asistencias;
     }
 
     // Método para descargar informe

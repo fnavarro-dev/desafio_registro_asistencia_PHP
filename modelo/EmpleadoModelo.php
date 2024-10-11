@@ -48,6 +48,7 @@ class EmpleadoModelo {
             
             if ($resultado) {
                 echo "<script>console.log('Empleado registrado exitosamente');</script>";
+                echo "<script>console.log('Hash almacenado: ', '" . $passwordHash . "');</script>";
                 return true;
             } else {
                 echo "<script>console.log('No se pudo registrar el empleado. Error: ' + JSON.stringify(" . json_encode($stmt->errorInfo()) . "));</script>";

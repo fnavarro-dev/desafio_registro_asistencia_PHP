@@ -10,6 +10,7 @@ class AsistenciaModelo {
     public function __construct() {
         $db = new Conexion();
         $this->conexion = $db->conexion;
+        echo "<script>console.log('AsistenciaModelo: Conexión establecida');</script>";
     }
 
     // Método para registrar la entrada del empleado
@@ -50,9 +51,20 @@ class AsistenciaModelo {
 
     // Método para obtener los registros de asistencia
     public function obtenerAsistencias() {
-        $sql = "SELECT e.nombre, e.apellido, a.fecha, a.hora_entrada, a.hora_salida FROM asistencias a JOIN empleados e ON a.empleado_id = e.id";
-        $resultado = $this->conexion->conexion->query($sql);
-        return $resultado;
+        echo "<script>console.log('AsistenciaModelo: Intentando obtener asistencias...');</script>";
+        try {
+            $sql = "SELECT e.nombre, e.apellido, a.fecha, a.hora_entrada, a.hora_salida 
+                    FROM asistencias a 
+                    JOIN empleados e ON a.empleado_id = e.id";
+            $resultado = $this->conexion->query($sql);
+            $asistencias = $resultado->fetchAll(PDO::FETCH_ASSOC);
+            echo "<script>console.log('AsistenciaModelo: Asistencias obtenidas:', " . json_encode($asistencias) . ");</script>";
+            return $asistencias;
+        } catch (PDOException $e) {
+            echo "<script>console.error('AsistenciaModelo: Error al obtener asistencias: ' + " . json_encode($e->getMessage()) . ");</script>";
+            error_log("Error al obtener asistencias: " . $e->getMessage());
+            return false;
+        }
     }
 
     // Otros métodos necesarios...
