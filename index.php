@@ -3,7 +3,7 @@
 session_start();
 
 // Incluir el controlador de empleados
-require_once './controlador/EmpleadoControlador.php';
+require_once __DIR__ . './controlador/EmpleadoControlador.php';
 
 // Verificar si el usuario ya está logueado
 if (isset($_SESSION['usuario_id'])) {

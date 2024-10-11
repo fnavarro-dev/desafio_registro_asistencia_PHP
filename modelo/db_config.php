@@ -5,7 +5,7 @@ class Conexion {
     private $host = "localhost";
     private $usuario = "root";
     private $contraseña = "";
-    private $base_datos = "empresa_xyz";
+    private $base_datos = "empresa_xyz2";
     private $charset = "utf8mb4";
     public $conexion;
 
@@ -29,6 +29,12 @@ class Conexion {
     public function cerrarConexion() {
         $this->conexion = null;
         echo "<script>console.log('Conexión a la base de datos cerrada');</script>";
+    }
+
+    // Nuevo método estático para obtener la conexión
+    public static function obtenerConexion() {
+        $instancia = new self();
+        return $instancia->conexion;
     }
 }
 ?>

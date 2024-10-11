@@ -1,8 +1,8 @@
 -- Creamos la base de datos si no existe
-CREATE DATABASE IF NOT EXISTS empresa_xyz;
+CREATE DATABASE IF NOT EXISTS empresa_xyz2;
 
 -- Seleccionamos la base de datos para usar
-USE empresa_xyz;
+USE empresa_xyz2;
 
 -- Creamos la tabla de empleados
 CREATE TABLE empleados (

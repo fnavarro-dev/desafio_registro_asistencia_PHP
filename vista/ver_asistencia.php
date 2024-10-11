@@ -2,12 +2,22 @@
 
 <!-- Esta es la Vista para que los administradores vean los registros de asistencia -->
 <?php
-// Verificar si el administrador ha iniciado sesión
-session_start();
-// Se asume que hay un mecanismo para verificar si es administrador
-if (!isset($_SESSION['admin'])) {
-    header("Location: login.php");
+// Comentamos o eliminamos la verificación de administrador
+// session_start();
+// if (!isset($_SESSION['admin'])) {
+//     header("Location: login.php");
+//     exit;
+// }
+
+require_once '../controlador/AsistenciaControlador.php';
+$asistenciaControlador = new AsistenciaControlador();
+
+if (isset($_POST['descargar_informe'])) {
+    $asistenciaControlador->descargarInforme();
+    exit;
 }
+
+$asistencias = $asistenciaControlador->verAsistencias();
 ?>
 
 <!DOCTYPE html>
@@ -26,11 +36,6 @@ if (!isset($_SESSION['admin'])) {
             <th>Hora de Salida</th>
         </tr>
         <?php
-        // Incluir el controlador de asistencia
-        require_once '../controlador/AsistenciaControlador.php';
-        $asistenciaControlador = new AsistenciaControlador();
-        $asistencias = $asistenciaControlador->verAsistencias();
-
         while ($fila = $asistencias->fetch_assoc()) {
             echo "<tr>";
             echo "<td>" . $fila['nombre'] . "</td>";
@@ -42,5 +47,9 @@ if (!isset($_SESSION['admin'])) {
         }
         ?>
     </table>
+
+    <form method="POST">
+        <button type="submit" name="descargar_informe">Descargar Informe</button>
+    </form>
 </body>
 </html>

@@ -33,18 +33,31 @@ class EmpleadoModelo {
      * @return bool Retorna true si el registro fue exitoso, false en caso contrario
      */
     public function registrarEmpleado($nombre, $apellido, $identificacion, $password) {
-        // Preparamos la consulta SQL con marcadores de posición (?)
-        $sql = "INSERT INTO empleados (nombre, apellido, identificacion, password) VALUES (?, ?, ?, ?)";
-        
-        // Preparamos la sentencia
-        $stmt = $this->conexion->conexion->prepare($sql);
-        
-        // Ejecutamos la sentencia con los valores proporcionados
-        // Nota: password_hash() se usa para encriptar la contraseña de forma segura
-        $resultado = $stmt->execute([$nombre, $apellido, $identificacion, password_hash($password, PASSWORD_DEFAULT)]);
-        
-        // Retornamos true si se insertó al menos una fila
-        return $resultado && $stmt->rowCount() > 0;
+        echo "<script>console.log('Intentando registrar empleado en la base de datos...');</script>";
+        try {
+            $conexion = Conexion::obtenerConexion();
+            $sql = "INSERT INTO empleados (nombre, apellido, identificacion, password) VALUES (?, ?, ?, ?)";
+            $stmt = $conexion->prepare($sql);
+            $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+            $stmt->bindParam(1, $nombre, PDO::PARAM_STR);
+            $stmt->bindParam(2, $apellido, PDO::PARAM_STR);
+            $stmt->bindParam(3, $identificacion, PDO::PARAM_STR);
+            $stmt->bindParam(4, $passwordHash, PDO::PARAM_STR);
+            
+            $resultado = $stmt->execute();
+            
+            if ($resultado) {
+                echo "<script>console.log('Empleado registrado exitosamente');</script>";
+                return true;
+            } else {
+                echo "<script>console.log('No se pudo registrar el empleado. Error: ' + JSON.stringify(" . json_encode($stmt->errorInfo()) . "));</script>";
+                return false;
+            }
+        } catch (PDOException $e) {
+            echo "<script>console.error('Error al registrar empleado: ' + " . json_encode($e->getMessage()) . ");</script>";
+            error_log("Error al registrar empleado: " . $e->getMessage());
+            return false;
+        }
     }
 
     /**
