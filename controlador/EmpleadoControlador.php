@@ -40,24 +40,7 @@ class EmpleadoControlador {
 
     // Otros métodos necesarios...
     public function registrarEmpleado($nombre, $apellido, $identificacion, $password) {
-        echo "<script>console.log('Intentando registrar nuevo empleado: ' + '$nombre $apellido');</script>";
-        try {
-            // Hashear la contraseña antes de guardarla
-            $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-            
-            $resultado = $this->modelo->registrarEmpleado($nombre, $apellido, $identificacion, $passwordHash);
-            
-            if ($resultado) {
-                echo "<script>console.log('Empleado registrado con éxito');</script>";
-                return true;
-            } else {
-                echo "<script>console.log('Fallo al registrar empleado');</script>";
-                return false;
-            }
-        } catch (Exception $e) {
-            echo "<script>console.error('Error al registrar empleado: ' + '" . $e->getMessage() . "');</script>";
-            return false;
-        }
+        return $this->modelo->registrarEmpleado($nombre, $apellido, $identificacion, $password);
     }
 }
 

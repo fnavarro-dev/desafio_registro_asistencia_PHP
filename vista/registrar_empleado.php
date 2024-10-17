@@ -16,8 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'password' => '[OCULTO]'
     ]) . ");</script>";
 
-    $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-    echo "<script>console.log('Hash generado: ', '" . $passwordHash . "');</script>";
+    // Aqui no habrá generación de hash, lo haremos en el modelo (EmpleadoModelo.php)
 
     $resultado = $controlador->registrarEmpleado($nombre, $apellido, $identificacion, $password);
 

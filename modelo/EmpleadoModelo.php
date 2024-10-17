@@ -19,8 +19,14 @@ class EmpleadoModelo {
      * Se ejecuta automáticamente al crear una instancia de EmpleadoModelo
      */
     public function __construct() {
-        // Creamos una nueva instancia de la clase Conexion
-        $this->conexion = new Conexion();
+        try {
+            $db = new Conexion();
+            $this->conexion = $db->conexion;
+            echo "<script>console.log('Conexión establecida en EmpleadoModelo');</script>";
+        } catch (Exception $e) {
+            echo "<script>console.error('Error al establecer conexión en EmpleadoModelo: ' + " . json_encode($e->getMessage()) . ");</script>";
+            error_log("Error al establecer conexión en EmpleadoModelo: " . $e->getMessage());
+        }
     }
 
     /**
@@ -35,10 +41,11 @@ class EmpleadoModelo {
     public function registrarEmpleado($nombre, $apellido, $identificacion, $password) {
         echo "<script>console.log('Intentando registrar empleado en la base de datos...');</script>";
         try {
-            $conexion = Conexion::obtenerConexion();
             $sql = "INSERT INTO empleados (nombre, apellido, identificacion, password) VALUES (?, ?, ?, ?)";
-            $stmt = $conexion->prepare($sql);
+            $stmt = $this->conexion->prepare($sql);
             $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+            echo "<script>console.log('Hash generado: ', '" . $passwordHash . "');</script>";
+            
             $stmt->bindParam(1, $nombre, PDO::PARAM_STR);
             $stmt->bindParam(2, $apellido, PDO::PARAM_STR);
             $stmt->bindParam(3, $identificacion, PDO::PARAM_STR);
@@ -48,10 +55,9 @@ class EmpleadoModelo {
             
             if ($resultado) {
                 echo "<script>console.log('Empleado registrado exitosamente');</script>";
-                echo "<script>console.log('Hash almacenado: ', '" . $passwordHash . "');</script>";
                 return true;
             } else {
-                echo "<script>console.log('No se pudo registrar el empleado. Error: ' + JSON.stringify(" . json_encode($stmt->errorInfo()) . "));</script>";
+                echo "<script>console.log('No se pudo registrar el empleado');</script>";
                 return false;
             }
         } catch (PDOException $e) {
@@ -69,17 +75,33 @@ class EmpleadoModelo {
      * @return array|bool Retorna los datos del empleado si las credenciales son correctas, false en caso contrario
      */
     public function iniciarSesion($identificacion, $password) {
-        // Preparamos la consulta SQL para buscar al empleado por su identificación
-        $sql = "SELECT * FROM empleados WHERE identificacion = ?";
-        $stmt = $this->conexion->conexion->prepare($sql);
-        $stmt->execute([$identificacion]);
-        $empleado = $stmt->fetch();
-        
-        // Verificamos si se encontró el empleado y si la contraseña es correcta
-        if ($empleado && password_verify($password, $empleado['password'])) {
-            return $empleado;
+        echo "<script>console.log('Intentando iniciar sesión...');</script>";
+        try {
+            // Usamos directamente $this->conexion, no $this->conexion->conexion
+            $sql = "SELECT * FROM empleados WHERE identificacion = ?";
+            $stmt = $this->conexion->prepare($sql);
+            $stmt->execute([$identificacion]);
+            $empleado = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            echo "<script>console.log('Empleado encontrado: ', " . json_encode($empleado ? 'Sí' : 'No') . ");</script>";
+            
+            if ($empleado) {
+                echo "<script>console.log('Hash almacenado: ', '" . $empleado['password'] . "');</script>";
+                echo "<script>console.log('Contraseña ingresada: ', '" . $password . "');</script>";
+                
+                $esValido = password_verify($password, $empleado['password']);
+                echo "<script>console.log('¿Contraseña válida? ', " . ($esValido ? 'Sí' : 'No') . ");</script>";
+                
+                if ($esValido) {
+                    return $empleado;
+                }
+            }
+            return false;
+        } catch (PDOException $e) {
+            echo "<script>console.error('Error al iniciar sesión: ' + " . json_encode($e->getMessage()) . ");</script>";
+            error_log("Error al iniciar sesión: " . $e->getMessage());
+            return false;
         }
-        return false;
     }
 
     /**
@@ -98,7 +120,7 @@ class EmpleadoModelo {
         return $resultado && $stmt->rowCount() > 0;
     }
 
-    // Aquí puedes agregar más métodos según sea necesario, por ejemplo:
+    // Aquí se pueden agregar más métodos según sea necesario, por ejemplo:
     // - obtenerEmpleadoPorId($id)
     // - actualizarEmpleado($id, $datos)
     // - eliminarEmpleado($id)
