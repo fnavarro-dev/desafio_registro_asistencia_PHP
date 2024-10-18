@@ -36,25 +36,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrar Nuevo Empleado</title>
+    <link rel="stylesheet" href="/desafio_registro_asistencia_php/css/registrar_empleado.css">
 </head>
 <body>
-    <h2>Registrar Nuevo Empleado</h2>
-    <?php
-    if (isset($mensaje)) {
-        echo "<p style='color: green;'>$mensaje</p>";
-    }
-    if (isset($error)) {
-        echo "<p style='color: red;'>$error</p>";
-    }
-    ?>
-    <form method="POST">
-        Nombre: <input type="text" name="nombre" required><br>
-        Apellido: <input type="text" name="apellido" required><br>
-        Identificación: <input type="number" name="identificacion" required><br>
-        Contraseña: <input type="password" name="password" required><br>
-        <button type="submit">Registrar</button>
-    </form>
-    <br>
-    <a href="/desafio_registro_asistencia_php/vista/login.php">Volver al inicio de sesión</a>
+    <div class="container">
+        <h2>Registrar Nuevo Empleado</h2>
+        <?php
+        if (isset($mensaje)) {
+            echo "<p class='mensaje exito'>$mensaje</p>";
+        }
+        if (isset($error)) {
+            echo "<p class='mensaje error'>$error</p>";
+        }
+        ?>
+        <form method="POST">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" required>
+            
+            <label for="apellido">Apellido:</label>
+            <input type="text" id="apellido" name="apellido" required>
+            
+            <label for="identificacion">Identificación:</label>
+            <input type="number" id="identificacion" name="identificacion" required>
+            
+            <label for="password">Contraseña:</label>
+            <input type="password" id="password" name="password" required>
+            
+            <button type="submit">Registrar</button>
+        </form>
+        <a href="/desafio_registro_asistencia_php/vista/login.php">Volver al inicio de sesión</a>
+    </div>
 </body>
 </html>

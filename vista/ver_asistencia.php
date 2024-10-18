@@ -27,10 +27,11 @@ echo "<script>console.log('Registros de asistencia obtenidos:', " . json_encode(
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registros de Asistencia</title>
+    <link rel="stylesheet" href="/desafio_registro_asistencia_php/css/ver_asistencia.css">
 </head>
 <body>
     <h2>Registros de Asistencia</h2>
-    <table border="1">
+    <table>
         <tr>
             <th>Nombre</th>
             <th>Apellido</th>

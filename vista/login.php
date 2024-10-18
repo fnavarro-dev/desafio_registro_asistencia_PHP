@@ -33,34 +33,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-<!-- HTML del formulario de login -->
-<!-- Esta es la Vista para el formulario de inicio de sesión -->
 <!DOCTYPE html>
-   <html>
-   <head>
-       <meta charset="UTF-8">
-       <title>Sistema de Asistencia</title>
-   </head>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Asistencia</title>
+    <link rel="stylesheet" href="/desafio_registro_asistencia_php/css/login.css">
+</head>
 <body>
-    <h2>Sistema de Asistencia</h2>
-    <?php
-    if (isset($error)) {
-        echo "<p style='color: red;'>$error</p>";
-    }
-    ?>
-    <h3>Iniciar Sesión como Empleado</h3>
-    <form method="POST">
-        Identificación: <input type="number" name="identificacion" required><br>
-        Contraseña: <input type="password" name="password" required><br>
-        <button type="submit" name="login">Ingresar</button>
-    </form>
+    <div class="container">
+        <h2>Sistema de Asistencia</h2>
+        <?php
+        if (isset($error)) {
+            echo "<p class='error'>$error</p>";
+        }
+        ?>
+        <h3>Iniciar Sesión como Empleado</h3>
+        <form method="POST">
+            <input type="number" name="identificacion" placeholder="Identificación" required>
+            <input type="password" name="password" placeholder="Contraseña" required>
+            <button type="submit" name="login">Ingresar</button>
+        </form>
 
-    <h3>Iniciar Sesión como Administrador</h3>
-    <form method="POST" action="/desafio_registro_asistencia_php/vista/ver_asistencia.php">
-        <button type="submit" name="admin_login">Acceso Administrador</button>
-    </form>
+        <h3>Iniciar Sesión como Administrador</h3>
+        <form method="POST" action="/desafio_registro_asistencia_php/vista/ver_asistencia.php">
+            <button type="submit" name="admin_login">Acceso Administrador</button>
+        </form>
 
-    <h3>Registrar Nuevo Empleado</h3>
-    <a href="/desafio_registro_asistencia_php/vista/registrar_empleado.php">Registrar Nuevo Empleado</a>
+        <h3>Registrar Nuevo Empleado</h3>
+        <a href="/desafio_registro_asistencia_php/vista/registrar_empleado.php">Registrar Nuevo Empleado</a>
+    </div>
 </body>
 </html>

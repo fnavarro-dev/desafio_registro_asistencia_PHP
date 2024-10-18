@@ -8,7 +8,7 @@ require_once __DIR__ . './controlador/EmpleadoControlador.php';
 // Verificar si el usuario ya está logueado
 if (isset($_SESSION['usuario_id'])) {
     // Si está logueado, redirigir a la página principal
-    header("Location: ./vista/pagina_principal.php");
+    header("Location: ./vista/registro_asistencia.php");
     exit();
 }
 
@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
     
     if ($resultado) {
         // Si el login es exitoso, redirigir a la página principal
-        header("Location: ./vista/pagina_principal.php");
+        header("Location: ./vista/registro_asistencia.php");
         exit();
     } else {
         // Si el login falla, redirigir al login con un mensaje de error
